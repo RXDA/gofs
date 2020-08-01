@@ -4,17 +4,17 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
 func main()  {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println("Current Dir is:", dir)
-	log.Println("start server at localhost:8080")
-	err = http.ListenAndServe("127.0.0.1:8080", http.FileServer(http.Dir(dir)))
+	log.Println("start file server at http://127.0.0.1:8080")
+	fileserver := http.FileServer(http.Dir(dir))
+	err = http.ListenAndServe("127.0.0.1:8080", fileserver)
 	if err != nil {
 		log.Fatal(err)
 	}
